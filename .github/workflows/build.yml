@@ -1,0 +1,20 @@
+name: Build
+
+on:
+  push: # Trigger the workflow on push events
+    branches:
+      - "main" # Push events to main branch
+      # - "dev" # Push events to dev branch
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v2 # Checkout the repository to the runner
+
+      - name: Build Docker image # Build the Docker image
+        run: |
+          docker login -u ${{ secrets.DOCKERHUB_USERNAME }} -p ${{ secrets.DOCKERHUB_TOKEN }}
+          docker build -t ${{ secrets.DOCKERHUB_USERNAME }}/app .
